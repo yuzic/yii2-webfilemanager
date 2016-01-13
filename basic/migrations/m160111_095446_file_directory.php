@@ -10,7 +10,7 @@ class m160111_095446_file_directory extends Migration
         $sql = 'CREATE TABLE "file_directory"
                 (
                   "id" serial NOT NULL,
-                  "parent_id" INTEGER DEFAULT NULL references file_directory(id),
+                  "parent_id" INTEGER DEFAULT NULL references file_directory(id) ON DELETE CASCADE,
                   "path" CHARACTER VARYING(500) NOT NULL,
                   "name"  CHARACTER VARYING(500) NOT NULL,
                   "created_at" INTEGER NOT NULL,

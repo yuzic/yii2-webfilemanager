@@ -12,7 +12,7 @@
 			fileIdInputSelector: '',
             directoryNameSelector:'#directory-name-selector',
             listContainer:'#file-list-container',
-            directoryId: 2,
+            directoryId: 1,
             historyNaviagation:[]
 		}, settings);
 		
@@ -38,9 +38,11 @@
 
             // up to directory
             $(document).on('click', '.directory-up', function() {
-                options.historyNaviagation.pop();
-                getListFromDirectory(options.historyNaviagation.pop());
-                options.historyNaviagation.join();
+                var popValue= options.historyNaviagation.pop();
+                getListFromDirectory(popValue);
+                console.log(options.historyNaviagation);
+                console.log(popValue);
+               // options.historyNaviagation.join();
             });
 
              // navigation by direcotory
@@ -49,6 +51,7 @@
                 if (elementSelector.attr('type') === 'directory'){
                     options.directoryId = elementSelector.attr('entityId');
                     options.historyNaviagation.push(options.directoryId);
+
                     getListFromDirectory(options.directoryId);
                 }
 

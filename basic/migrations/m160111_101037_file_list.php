@@ -10,14 +10,14 @@ class m160111_101037_file_list extends Migration
         $sql = 'CREATE TABLE "file_list"
                 (
                   "id" serial NOT NULL,
-                  "file_directory_id" INTEGER NOT NULL REFERENCES "file_directory" ("id"),
+                  "file_directory_id" INTEGER NOT NULL REFERENCES "file_directory" ("id") ON DELETE CASCADE,
                   "name"  CHARACTER VARYING(500) NOT NULL,
                   "size"  INTEGER NOT NULL,
                   "remote_ip"  INTEGER NOT NULL,
                   "created_at" INTEGER NOT NULL,
                   "modified_at" INTEGER DEFAULT NULL,
                   "status_id" INTEGER NOT NULL,
-                  CONSTRAINT file_list_pkey PRIMARY KEY (id )
+                  CONSTRAINT file_list_pkey PRIMARY KEY (id)
                 )';
         $this->execute($sql);
     }

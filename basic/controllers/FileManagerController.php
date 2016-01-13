@@ -81,7 +81,7 @@ class FileManagerController extends Controller
             if ($model->save())
             {
                 $headers->add('HTTP/1.1 201 Created','');
-                $headers->add('Location', Url::toRoute('//directory/view', ['id' => $model->id]));
+               // $headers->add('Location', Url::toRoute('//directory/view', ['id' => $model->id]));
             }
             else {
                 $headers->add('HTTP/1.1 400 Bad request','');
@@ -139,7 +139,7 @@ class FileManagerController extends Controller
                 throw new HttpException(404, Yii::t('Admin', 'Directory not found'));
             }
             $path = Yii::getAlias('@webroot') . '/' . $this->uploadPath . '/'. $model->path;
-            $this->deleteDir($path);
+            //$this->deleteDir($path);
             if (!$model->delete())
             {
                 $headers->add('HTTP/1.1 400 Bad request','');
@@ -176,14 +176,14 @@ class FileManagerController extends Controller
                 $this->deleteFile($model->directory->path. '/' .$model->name);
                 $headers->add('HTTP/1.1 201 Created','');
             }
-            else{
+            else {
                 $headers->add('HTTP/1.1 400 Bad request','');
             }
 
-            if (Yii::app()->request->isAjaxRequest)
+            if ($request->isAjax)
             {
                 $headers->add('HTTP/1.1 201 Created','');
-                $this->renderAjax('deleteFile_json', array('model' => $model, 'status' => true));
+                return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => true]);
             }
         }
         else {
@@ -193,8 +193,10 @@ class FileManagerController extends Controller
 
     public function actionListFile()
     {
-        $directoryId = (int) (isset($_POST['directoryId']) ? $_POST['directoryId'] : 2);
+        $request = Yii::$app->request;
+        $directoryId = (int) ($request->post('directory_id') ? $request->post('directory_id') : 1);
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
         return  [
             'model' => $this->listFileFromDirectory($directoryId)
         ];
