@@ -16,7 +16,9 @@ class m160111_095446_file_directory extends Migration
                   "created_at" INTEGER NOT NULL,
                   "modified_at" INTEGER DEFAULT NULL,
                   CONSTRAINT file_directory_pkey PRIMARY KEY (id )
-                )';
+                );
+                INSERT INTO public.file_directory (id, parent_id, path, name, created_at, modified_at) VALUES (1, null, \'files\', \'files\', 32, 32232);
+                ';
 
         $this->execute($sql);
     }
