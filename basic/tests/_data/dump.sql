@@ -22,6 +22,6 @@ CREATE TABLE "file_list" (
 );
 
 INSERT INTO `file_list` VALUES (1, 2, 'file1.zip', '323254534','4324234', 0,0 ,1);
-INSERT INTO `file_list` VALUES (2, 2, 'file1.zip', '323254534','4324234', 0,0 ,1);
+INSERT INTO `file_list` VALUES (2, 2, 'file2.zip', '323254534','4324234', 0,0 ,1);
 
 COMMIT;

@@ -43,6 +43,9 @@ class DirectoryBehavior extends Behavior
             {
                 $this->owner->path = $this->getSavePath();
                 $this->owner->name = $this->getDirectoryName();
+                $this->owner->created_at = time();
+                $this->owner->modified_at = time();
+
                 $event->isValid = true;
                 return true;
             }

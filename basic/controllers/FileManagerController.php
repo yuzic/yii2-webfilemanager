@@ -74,8 +74,6 @@ class FileManagerController extends Controller
         if ($request->post('name') !== null)
         {
             $model->attributes = $request->post();
-            $model->created_at = time();
-            $model->modified_at= time();
             $model->parent_id= $fileDirectory->id;
 
             if ($model->save())

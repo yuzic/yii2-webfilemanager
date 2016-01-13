@@ -2,7 +2,7 @@
 return [
     'id' => 'app-console',
     'class' => 'yii\console\Application',
-    'basePath' => \Yii::getAlias('@tests'),
+    'basePath' =>   dirname(__DIR__) . '/../',
     'runtimePath' => \Yii::getAlias('@tests/_output'),
     'bootstrap' => [],
     'components' => [
