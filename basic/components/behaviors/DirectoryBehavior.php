@@ -1,6 +1,7 @@
 <?php
 namespace app\components\behaviors;
 
+use Yii;
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
 
@@ -78,7 +79,7 @@ class DirectoryBehavior extends Behavior
 
     private function getWebRootPath()
     {
-        return Yii::getPathOfAlias('webroot');
+        return Yii::getAlias('@webroot');
     }
 
     private function getUploadPath()
@@ -92,6 +93,7 @@ class DirectoryBehavior extends Behavior
         if ($this->directoryPath !== null){
             $directoryPath = '/' .$this->directoryPath .'/';
         }
+
         return $directoryPath;
     }
 

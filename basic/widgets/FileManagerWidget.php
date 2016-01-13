@@ -51,6 +51,11 @@ class FileManagerWidget extends Widget
         'position' => \yii\web\View::POS_END
     ];
 
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+    ];
+
     protected $assets_dir = 'views/fileManager/assets';
 
 
@@ -136,8 +141,8 @@ class FileManagerWidget extends Widget
 
 
         $fileManagerOptions = [
-            'csrfTokenName' => null,
-            'csrfToken' => null,
+            'csrfTokenName' => 'token',
+            'csrfToken' => rand(1, 9),
             'pickerSelector' => '#'.$this->fileManagerContainerId.'Uploader',
             'createFileRoute' => Url::toRoute('//fileManager/createFile'),
             'createDirectoryRoute' => Url::toRoute('//fileManager/createDirectory'),

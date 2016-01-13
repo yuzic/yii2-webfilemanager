@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - yii2basic@localhost" uuid="70a4407d-2461-43e6-8f69-43e7dab9843c">
+      <secret-storage>master_key</secret-storage>
+      <user-name>postgres</user-name>
+      <schema-pattern>yii2basic.pg_catalog yii2basic.public</schema-pattern>
+      <default-schemas>yii2basic.pg_catalog yii2basic.public</default-schemas>
+    </data-source>
+  </component>
+</project>

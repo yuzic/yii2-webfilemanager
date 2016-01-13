@@ -3,6 +3,8 @@ namespace app\components\behaviors;
 
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
+use Yii;
+
 
 class FileMoveBehavior extends Behavior
 {
@@ -17,21 +19,28 @@ class FileMoveBehavior extends Behavior
      */
     public $directoryPath = null;
 
+
     public function events()
     {
-    	return array_merge(parent::events(), array(
-    		'onBeforeSave' => 'beforeSave',
-    	));
+        return [
+            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
+        ];
     }
 
-    public function beforeSave($event)
+    public function beforeInsert($event)
     {
         $fileName = $_FILES['File']['name']['uploadFile'];
         if (move_uploaded_file($_FILES['File']['tmp_name']['uploadFile'], $this->getFullPath() .'/'. $fileName ))
         {
             $this->owner->name = $fileName;
             $this->owner->size = filesize($this->getFullPath() .'/'. $fileName);
+            $this->owner->remote_ip = ip2long($_SERVER['REMOTE_ADDR']);
+            $this->owner->status_id = 1;
+            $this->owner->created_at = time();
+            $this->owner->modified_at= time();
+
             $event->isValid = true;
+
             return true;
         }
         else
@@ -49,7 +58,7 @@ class FileMoveBehavior extends Behavior
 
     private function getWebRootPath()
     {
-        return Yii::getPathOfAlias('webroot');
+        return Yii::getAlias('@webroot');
     }
 
     private function getUploadPath()
@@ -61,6 +70,7 @@ class FileMoveBehavior extends Behavior
     {
         if ($this->directoryPath !== null)
             $this->directoryPath = '/' . $this->directoryPath;
+
         return $this->directoryPath;
     }
 

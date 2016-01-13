@@ -28,9 +28,9 @@ class FileDirectory extends ActiveRecord implements \JsonSerializable
     public function jsonSerialize() {
         return [
             'id' => $this->id === null ? null : intval($this->id),
-            'path' =>$this->directory->path,
+            'path' => $this->path,
             'name'     => $this->name,
-            'type'     => 'file',
+            'type'     => 'directory',
         ];
     }
 }

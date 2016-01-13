@@ -1,7 +1,7 @@
 <?php
 use app\widgets\FileManagerWidget;
 /* @var $this yii\web\View */
-$this->title = 'Beb file manager';
+$this->title = 'Web file manager';
 ?>
 
 <?=FileManagerWidget::widget([

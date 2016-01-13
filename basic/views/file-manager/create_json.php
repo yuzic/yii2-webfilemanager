@@ -1,5 +1,5 @@
 <?php
-$response = array('model' => $model);
+$response = ['model' => $model->jsonSerialize()];
 if ($model->hasErrors()) {
 	$response['errors'] = $model->getErrors();
 }

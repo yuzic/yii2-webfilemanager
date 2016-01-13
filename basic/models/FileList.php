@@ -3,13 +3,12 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 use app\models\FileDirectory;
+
 /**
- * Class PhotoGallery
+ * Class FileList
  * @package app\models
  * @property String $id
  * @property String $title
- * @property String $id_user
- * @property String $created
  * @property String $modified
  */
 class FileList extends ActiveRecord implements \JsonSerializable
