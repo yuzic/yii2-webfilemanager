@@ -12,7 +12,7 @@
 			fileIdInputSelector: '',
             directoryNameSelector:'#directory-name-selector',
             listContainer:'#file-list-container',
-            directoryId: 1,
+            directoryId: 2,
             historyNaviagation:[]
 		}, settings);
 		
@@ -38,11 +38,10 @@
 
             // up to directory
             $(document).on('click', '.directory-up', function() {
-                var popValue= options.historyNaviagation.pop();
-                getListFromDirectory(popValue);
-                console.log(options.historyNaviagation);
-                console.log(popValue);
-               // options.historyNaviagation.join();
+                console.log(options.historyNaviagation.pop());
+                //options.historyNaviagation.pop();
+                getListFromDirectory(options.historyNaviagation.pop());
+                options.historyNaviagation.join();
             });
 
              // navigation by direcotory
@@ -51,13 +50,14 @@
                 if (elementSelector.attr('type') === 'directory'){
                     options.directoryId = elementSelector.attr('entityId');
                     options.historyNaviagation.push(options.directoryId);
-
+                    console.log(options.historyNaviagation);
                     getListFromDirectory(options.directoryId);
                 }
 
             });
 
             function uploadFile() {
+                console.log(1);
 	        	var data = new FormData();
 	        	var files = $(options.pickerSelector)[0].files;
 	        	for (var i = 0; i< files.length; i++){
@@ -73,9 +73,8 @@
 		         		success: function(data) {
                             addFileToContainer(data.model);
 		         		},
-		         		error: function(data) {
+		         		error: function() {
 		         			console.log('error adding photo');
-                            alert(data);
 		         		}
 		         	});
 	        	}
@@ -165,14 +164,9 @@
 		    };	
 		    
 		    function listFile() {
-                var data = {};
-                data[options.csrfTokenName] = options.csrfToken;
-                data['directory_id'] = options.directoryId;
-
 		    	$.ajax(options.listFile, {
-	    	  		 type: "POST",
-	    	  		 dataType: 'json',
-                     data: data,
+	    	  		 type: "GET",
+	    	  		 dataType: 'json', 
 	    	  		 success: function(data) {
                          //clear list container
 	    	  			for (var i=0; i < data.model.length; i++) {

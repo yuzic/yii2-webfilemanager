@@ -1577,7 +1577,7 @@
       <column name="created_at" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="modified_at" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="file_directory_pkey" columns="id"/>
-      <foreign-key name="file_directory_parent_id_fkey" columns="parent_id" ref-table="file_directory" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="file_directory_parent_id_fkey" columns="parent_id" ref-table="file_directory" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
       <exported-key name="file_directory_parent_id_fkey" table="file_directory" schema="public" catalog="yii2basic" columns="parent_id"/>
       <exported-key name="file_list_file_directory_id_fkey" table="file_list" schema="public" catalog="yii2basic" columns="file_directory_id"/>
     </table>
@@ -1603,7 +1603,7 @@
       <column name="modified_at" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="status_id" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="file_list_pkey" columns="id"/>
-      <foreign-key name="file_list_file_directory_id_fkey" columns="file_directory_id" ref-table="file_directory" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="file_list_file_directory_id_fkey" columns="file_directory_id" ref-table="file_directory" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="0" deferrability="2"/>
     </table>
     <table name="file_list_id_seq" schema="public" catalog="yii2basic" type="SEQUENCE">
       <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>

@@ -127,7 +127,6 @@
     border-radius: 2px 2px 2px 2px;
 }
 
-
 #progress_bar {
     margin: 10px 0;
     padding: 3px;
@@ -159,6 +158,6 @@
     line-height: 20px;
     cursor: pointer;
     height: 28px;
-    width: 20px;
-    margin-left: 0px;
+    width: 15px;
+    margin-left: 60px;
 }

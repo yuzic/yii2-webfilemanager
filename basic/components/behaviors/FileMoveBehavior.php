@@ -3,6 +3,7 @@ namespace app\components\behaviors;
 
 use yii\db\ActiveRecord;
 use yii\base\Behavior;
+use yii\web\HttpException;
 use Yii;
 
 
@@ -19,6 +20,11 @@ class FileMoveBehavior extends Behavior
      */
     public $directoryPath = null;
 
+    protected $deniedType =  [
+        'php',
+
+    ];
+
 
     public function events()
     {
@@ -30,8 +36,14 @@ class FileMoveBehavior extends Behavior
     public function beforeInsert($event)
     {
         $fileName = $_FILES['File']['name']['uploadFile'];
-        if (move_uploaded_file($_FILES['File']['tmp_name']['uploadFile'], $this->getFullPath() .'/'. $fileName ))
-        {
+
+        $extension = $this->getFileExtension($fileName);
+
+        if (!$this->isAllowExtension($extension)) {
+            throw new HttpException(403, Yii::t('yii','You are not authorized to upload: ' . $extension . 'file'));
+        }
+
+        if (move_uploaded_file($_FILES['File']['tmp_name']['uploadFile'], $this->getFullPath() .'/'. $fileName )) {
             $this->owner->name = $fileName;
             $this->owner->size = filesize($this->getFullPath() .'/'. $fileName);
             $this->owner->remote_ip = ip2long($_SERVER['REMOTE_ADDR']);
@@ -42,11 +54,10 @@ class FileMoveBehavior extends Behavior
             $event->isValid = true;
 
             return true;
-        }
-        else
-        {
+        } else {
             $this->owner->addError('uploadFile', Yii::t('Admin', 'Unable to save file to server'));
             $event->isValid = false;
+
             return false;
         }
     }
@@ -64,6 +75,20 @@ class FileMoveBehavior extends Behavior
     private function getUploadPath()
     {
         return $this->uploadPath;
+    }
+
+    private function isAllowExtension($extension){
+        if (in_array($extension, $this->deniedType)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function getFileExtension($fileName) {
+        $info = new \SplFileInfo($fileName);
+
+        return $info->getExtension();
     }
 
     private function getDirectoryPath()

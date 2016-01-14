@@ -58,6 +58,7 @@
             });
 
             function uploadFile() {
+                console.log(1);
 	        	var data = new FormData();
 	        	var files = $(options.pickerSelector)[0].files;
 	        	for (var i = 0; i< files.length; i++){
@@ -73,9 +74,8 @@
 		         		success: function(data) {
                             addFileToContainer(data.model);
 		         		},
-		         		error: function(data) {
+		         		error: function() {
 		         			console.log('error adding photo');
-                            alert(data);
 		         		}
 		         	});
 	        	}
@@ -167,12 +167,11 @@
 		    function listFile() {
                 var data = {};
                 data[options.csrfTokenName] = options.csrfToken;
-                data['directory_id'] = options.directoryId;
-
+                data['id'] = options.directory_id;
 		    	$.ajax(options.listFile, {
 	    	  		 type: "POST",
-	    	  		 dataType: 'json',
-                     data: data,
+                    data: data,
+	    	  		 dataType: 'json', 
 	    	  		 success: function(data) {
                          //clear list container
 	    	  			for (var i=0; i < data.model.length; i++) {

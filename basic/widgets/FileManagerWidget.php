@@ -141,8 +141,8 @@ class FileManagerWidget extends Widget
 
 
         $fileManagerOptions = [
-            'csrfTokenName' => 'token',
-            'csrfToken' => rand(1, 9),
+            'csrfTokenName' => Yii::$app->request->csrfParam ,
+            'csrfToken' =>  yii::$app->request->csrfToken,
             'pickerSelector' => '#'.$this->fileManagerContainerId.'Uploader',
             'createFileRoute' => Url::toRoute('//fileManager/createFile'),
             'createDirectoryRoute' => Url::toRoute('//fileManager/createDirectory'),

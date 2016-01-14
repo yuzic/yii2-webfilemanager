@@ -9,7 +9,6 @@ use app\models\FileDirectory;
 use app\models\FileList;
 use app\components\behaviors\DirectoryBehavior;
 use app\components\behaviors\FileMoveBehavior;
-use yii\helpers\Url;
 use yii\web\HttpException;
 
 
@@ -50,43 +49,34 @@ class FileManagerController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
+
 
     public function actionCreateDirectory()
     {
         $request = Yii::$app->request;
-        $headers = Yii::$app->response->headers;
         $model = new FileDirectory();
-
         $fileDirectory = FileDirectory::findOne((int) $request->post('parent_id'));
-        $model->attachBehavior('DirectorySave', array(
+        $model->attachBehavior('DirectorySave', [
             'class' => DirectoryBehavior::className(),
             'directoryName' => $request->post('name'),
             'directoryPath' => $fileDirectory->path,
-        ));
+        ]);
 
 
-        if ($request->post('name') !== null)
-        {
+        if ($request->post('name') !== null) {
+            $headers = Yii::$app->response->headers;
             $model->attributes = $request->post();
             $model->parent_id= $fileDirectory->id;
 
-            if ($model->save())
-            {
-                $headers->add('HTTP/1.1 201 Created','');
-               // $headers->add('Location', Url::toRoute('//directory/view', ['id' => $model->id]));
+            if ($model->save()) {
+               $headers->add('HTTP/1.1 201 Created','');
             }
-            else {
-                $headers->add('HTTP/1.1 400 Bad request','');
-            }
+            $headers->add('HTTP/1.1 400 Bad request','');
         }
-        if ($request->isAjax)
-        {
+
+        if ($request->isAjax) {
             return $this->renderAjax('create_json', ['model' => $model]);
         }
 
@@ -94,33 +84,30 @@ class FileManagerController extends Controller
 
     public function actionCreateFile()
     {
-        $model = new FileList();
         $request = Yii::$app->request;
-        $headers = Yii::$app->response->headers;
-        $fileDirectory = FileDirectory::findOne((int) $_POST['File']['file_directory_id']);
+        $filePost = $request->post('File');
+        $fileDirectory = FileDirectory::findOne((int) $filePost['file_directory_id']);
+        $model = new FileList();
         $model->attachBehavior('FileSave', [
             'class' => FileMoveBehavior::className(),
             'directoryPath' => $fileDirectory->path,
         ]);
 
-        if ($request->post('File') !== null)
-        {
-            $model->attributes = $request->post('File');
+        if ($filePost !== null) {
+            $headers = Yii::$app->response->headers;
+            $model->attributes = $filePost;
             $model->file_directory_id= $fileDirectory->id;
 
-            if ($model->save())
-            {
+            if ($model->save()) {
                 $headers->add('HTTP/1.1 201 Created','');
-                //$headers->add('Location', Url::toRoute('//file/view'));
             }
-            else {
-                $headers->add('HTTP/1.1 400 Bad request','');
-            }
-        }else{
+
+            $headers->add('HTTP/1.1 400 Bad request','');
+        } else{
             throw new HttpException(403, Yii::t('yii','You are not authorized to perform this action.'));
         }
         if ($request->isAjax) {
-            return $this->renderAjax('createFile_json', array('model' => $model));
+            return $this->renderAjax('createFile_json', ['model' => $model]);
         }
     }
 
@@ -137,14 +124,13 @@ class FileManagerController extends Controller
                 throw new HttpException(404, Yii::t('Admin', 'Directory not found'));
             }
             $path = Yii::getAlias('@webroot') . '/' . $this->uploadPath . '/'. $model->path;
-            //$this->deleteDir($path);
-            if (!$model->delete())
-            {
+            $this->deleteDir($path);
+            if (!$model->delete()) {
                 $headers->add('HTTP/1.1 400 Bad request','');
+
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => false]);
             }
-            if ($request->isAjax)
-            {
+            if ($request->isAjax) {
                 $headers->add('HTTP/1.1 201 Created','');
 
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => true]);
@@ -164,8 +150,7 @@ class FileManagerController extends Controller
 
             $model = FileList::findOne($id);
 
-            if ($model === null)
-            {
+            if ($model === null) {
                 throw new \yii\web\HttpException(404, Yii::t('Admin', 'File not found'));
             }
 
@@ -174,25 +159,34 @@ class FileManagerController extends Controller
                 $this->deleteFile($model->directory->path. '/' .$model->name);
                 $headers->add('HTTP/1.1 201 Created','');
             }
-            else {
-                $headers->add('HTTP/1.1 400 Bad request','');
-            }
 
-            if ($request->isAjax)
-            {
+            $headers->add('HTTP/1.1 400 Bad request','');
+
+
+            if ($request->isAjax) {
                 $headers->add('HTTP/1.1 201 Created','');
+
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => true]);
             }
-        }
-        else {
+        } else {
             throw new HttpException(403, Yii::t('yii','You are not authorized to perform this action.'));
         }
     }
 
+    /**
+     * Action list files
+     * @return array
+     * @throws HttpException
+     */
     public function actionListFile()
     {
         $request = Yii::$app->request;
-        $directoryId = (int) ($request->post('directory_id') ? $request->post('directory_id') : 1);
+        $directoryId = (int) $request->post('directory_id');
+
+        if (!$directoryId) {
+            throw new HttpException(403, Yii::t('yii','Dorectory id: ' . $directoryId. ' Not found'));
+        }
+
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         return  [
@@ -202,10 +196,11 @@ class FileManagerController extends Controller
 
     /**
      * List file and directory
+     *
      * @param int $id - id Directory
      * @return array
      */
-    private function listFileFromDirectory($id)
+    protected function listFileFromDirectory($id)
     {
         $directoryList = FileDirectory::findAll([
                 'parent_id' => $id,
@@ -214,8 +209,6 @@ class FileManagerController extends Controller
         $fileList = FileList::findAll([
             'file_directory_id' => $id,
         ]);
-
-       // print_r($fileList);
 
         $dataFileCollection = [];
 
@@ -231,28 +224,30 @@ class FileManagerController extends Controller
 
     /**
      * delete file from path
+     *
      * @param string $path
      * @return bool
      */
     public function deleteFile($path){
-        $path = Yii::getAlias('@webroot') . '/' .$this->uploadPath .'/'.$path;
+        $path = Yii::getAlias('@webroot') . '/' .$this->uploadPath . '/'. $path;
 
         return unlink($path);
     }
 
     /**
-     * delete recursive path and files
+     * Delete recursive path and files
+     *
      * @param string $path - local path to directory
      * @return bool
      */
-    public function deleteDir($path){
+    protected function deleteDir($path){
         $uploadPath = Yii::getAlias('@webroot') . '/' .$this->uploadPath;
-        if ($path !== $uploadPath)
-        {
+        if ($path !== $uploadPath) {
             $callback = [__CLASS__, __FUNCTION__];
+
             return is_file($path)
                 ? unlink($path)
-                : array_map($callback, glob($path.'/*')) == rmdir($path);
+                : array_map($callback, glob($path . '/*')) == rmdir($path);
         }
     }
 }

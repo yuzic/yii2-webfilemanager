@@ -58,6 +58,7 @@
             });
 
             function uploadFile() {
+                console.log(1);
 	        	var data = new FormData();
 	        	var files = $(options.pickerSelector)[0].files;
 	        	for (var i = 0; i< files.length; i++){
