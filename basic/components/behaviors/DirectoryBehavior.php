@@ -31,36 +31,31 @@ class DirectoryBehavior extends Behavior
     }
 
     public function beforeInsert($event){
-        if ($this->getDirectoryName() !== null)
-        {
-            if (file_exists($this->getFullPath()))
-            {
+        if ($this->getDirectoryName() !== null) {
+            if (file_exists($this->getFullPath())) {
                 $this->owner->addError('Error create direcotory', Yii::t('Admin', 'Directory exist'));
                 $event->isValid = false;
-                return false;
             }
-            if (mkdir($this->getFullPath()))
-            {
+
+            if (mkdir($this->getFullPath())) {
                 $this->owner->path = $this->getSavePath();
                 $this->owner->name = $this->getDirectoryName();
                 $this->owner->created_at = time();
                 $this->owner->modified_at = time();
-
                 $event->isValid = true;
+
                 return true;
             }
-            else
-            {
-                $this->owner->addError('create direcotory', Yii::t('Admin', 'Unable to create directory to server'));
-                $event->isValid = false;
-            }
-        }
-        else
-        {
-            $this->owner->addError('uploadFile', Yii::t('Admin', 'directoryName is empty'));
+
+            $this->owner->addError('create direcotory', Yii::t('Admin', 'Unable to create directory to server'));
             $event->isValid = false;
-            return false;
         }
+
+        $this->owner->addError('uploadFile', Yii::t('Admin', 'directoryName is empty'));
+        $event->isValid = false;
+
+        return false;
+
     }
 
     private function getSavePath()
@@ -93,7 +88,7 @@ class DirectoryBehavior extends Behavior
     private function getDirectoryPath()
     {
         $directoryPath = null;
-        if ($this->directoryPath !== null){
+        if ($this->directoryPath !== null)  {
             $directoryPath = '/' .$this->directoryPath .'/';
         }
 

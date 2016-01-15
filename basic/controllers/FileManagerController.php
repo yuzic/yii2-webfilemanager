@@ -116,22 +116,26 @@ class FileManagerController extends Controller
         $request = Yii::$app->request;
         if ($request->post('id'))
         {
-            $headers = Yii::$app->response->headers;
             $id  = (int) $request->post('id');
+
+            if (!$id) {
+                throw new HttpException(404, Yii::t('Admin', 'Directory Id not found'));
+            }
+
             $model = FileDirectory::findOne($id);
-            if ($model === null)
-            {
+            if ($model === null) {
                 throw new HttpException(404, Yii::t('Admin', 'Directory not found'));
             }
-            $path = Yii::getAlias('@webroot') . '/' . $this->uploadPath . '/'. $model->path;
-            $this->deleteDir($path);
+
             if (!$model->delete()) {
-                $headers->add('HTTP/1.1 400 Bad request','');
+                $request->headers->add('HTTP/1.1 400 Bad request','');
 
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => false]);
             }
+
             if ($request->isAjax) {
-                $headers->add('HTTP/1.1 201 Created','');
+                $this->deleteDir($this->getPathByModel($model));
+                $request->headers->add('HTTP/1.1 201 Created','');
 
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => true]);
             }
@@ -143,7 +147,6 @@ class FileManagerController extends Controller
     public function actionDeleteFile()
     {
         $request = Yii::$app->request;
-        $headers = Yii::$app->response->headers;
 
         if ($request->post('id')) {
             $id  = (int) $request->post('id');
@@ -154,17 +157,15 @@ class FileManagerController extends Controller
                 throw new \yii\web\HttpException(404, Yii::t('Admin', 'File not found'));
             }
 
-            if ($model->delete())
-            {
+            if ($model->delete()) {
                 $this->deleteFile($model->directory->path. '/' .$model->name);
-                $headers->add('HTTP/1.1 201 Created','');
+                $request->headers->add('HTTP/1.1 201 Created','');
             }
 
-            $headers->add('HTTP/1.1 400 Bad request','');
-
+            $request->headers->add('HTTP/1.1 400 Bad request','');
 
             if ($request->isAjax) {
-                $headers->add('HTTP/1.1 201 Created','');
+                $request->headers->add('HTTP/1.1 201 Created','');
 
                 return $this->renderAjax('deleteFile_json', ['model' => $model, 'status' => true]);
             }
@@ -228,10 +229,16 @@ class FileManagerController extends Controller
      * @param string $path
      * @return bool
      */
-    public function deleteFile($path){
+    protected function deleteFile($path){
         $path = Yii::getAlias('@webroot') . '/' .$this->uploadPath . '/'. $path;
 
         return unlink($path);
+    }
+
+
+    protected function getPathByModel($model)
+    {
+        return Yii::getAlias('@webroot') . '/' . $this->uploadPath . '/'. $model->path;
     }
 
     /**

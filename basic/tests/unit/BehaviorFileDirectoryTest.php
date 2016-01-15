@@ -8,7 +8,7 @@ use app\components\behaviors\FileMoveBehavior;
 use \app\models\FileDirectory;
 use \app\models\FileList;
 
-class BehaviorTest extends \yii\codeception\TestCase
+class BehaviorFileDirectoryTest extends \yii\codeception\TestCase
 {
     public $appConfig = '@tests/unit/_config.php';
 

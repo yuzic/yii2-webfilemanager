@@ -21,6 +21,7 @@ class FileList extends ActiveRecord implements \JsonSerializable
         return 'file_list';
     }
 
+
     public function getDirectory()
     {
         return $this->hasOne(FileDirectory::className(), ['id' => 'file_directory_id']);

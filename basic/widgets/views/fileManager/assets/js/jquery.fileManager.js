@@ -74,7 +74,7 @@
                             addFileToContainer(data.model);
 		         		},
 		         		error: function(data) {
-		         			console.log('error adding photo');
+		         			console.log('error adding file');
                             alert(data);
 		         		}
 		         	});

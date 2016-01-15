@@ -35,8 +35,8 @@ class FileMoveBehavior extends Behavior
 
     public function beforeInsert($event)
     {
-        $fileName = $_FILES['File']['name']['uploadFile'];
 
+        $fileName = $_FILES['File']['name']['uploadFile'];
         $extension = $this->getFileExtension($fileName);
 
         if (!$this->isAllowExtension($extension)) {
@@ -54,12 +54,14 @@ class FileMoveBehavior extends Behavior
             $event->isValid = true;
 
             return true;
-        } else {
-            $this->owner->addError('uploadFile', Yii::t('Admin', 'Unable to save file to server'));
-            $event->isValid = false;
-
-            return false;
         }
+
+
+        $this->owner->addError('uploadFile', Yii::t('Admin', 'Unable to save file to server'));
+        $event->isValid = false;
+
+        return false;
+
     }
 
     private function getFullPath()
@@ -91,10 +93,11 @@ class FileMoveBehavior extends Behavior
         return $info->getExtension();
     }
 
-    private function getDirectoryPath()
+    protected function getDirectoryPath()
     {
-        if ($this->directoryPath !== null)
+        if ($this->directoryPath !== null) {
             $this->directoryPath = '/' . $this->directoryPath;
+        }
 
         return $this->directoryPath;
     }
