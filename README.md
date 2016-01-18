@@ -3,8 +3,8 @@ Web  File Manager is based on Yii2
 
 EXAMPLE WEB
 -------------------
-    you can see the work this [Web  File Manager] By link:
-    http://manager.virtc.ru
+    you can see the work By link:
+    [Web  File Manager](http://manager.virtc.ru)
    
 DIRECTORY STRUCTURE
 -------------------
