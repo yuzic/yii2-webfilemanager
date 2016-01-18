@@ -19,8 +19,11 @@ REQUIREMENTS
 ------------
 
 Yii2 > 2
+
 PostgreSQL > 9.0
+
 Php > 5.5
+
 Composer
 
 
