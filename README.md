@@ -1,7 +1,10 @@
-WebFileManager is based on Yii2
+Web  File Manager is based on Yii2
 ============================
 
-
+EXAMPLE WEB
+-------------------
+    you can see the work this [Web  File Manager] By link (http://manager.virtc.ru)
+   
 DIRECTORY STRUCTURE
 -------------------
 
@@ -17,6 +20,9 @@ DIRECTORY STRUCTURE
 
 
 
+### Database
+    Run migration for Database deployment
+
 REQUIREMENTS
 ------------
 
@@ -25,5 +31,3 @@ REQUIREMENTS
     Php > 5.5
     Composer
 
-
-# yii2-webfilemanager
