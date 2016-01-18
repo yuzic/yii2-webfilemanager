@@ -4,7 +4,8 @@ Web  File Manager is based on Yii2
 EXAMPLE WEB
 -------------------
     you can see the work By link:
-    [Web  File Manager](http://manager.virtc.ru)
+    [Web  File Manager](http://manager.virtc.ru)    
+
    
 DIRECTORY STRUCTURE
 -------------------
@@ -31,4 +32,6 @@ REQUIREMENTS
     PostgreSQL > 9.0
     Php > 5.5
     Composer
-
+    
+        
+[Web  File Manager](http://manager.virtc.ru) 
