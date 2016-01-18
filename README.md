@@ -8,6 +8,8 @@ DIRECTORY STRUCTURE
       config/             contains application configurations
       widgets/            widgets application
       controllers/        contains Web controller classes
+      components/         contains Web component
+      components/behaviors    behaviors for model
       migration/          contains Web controller classes
       models/             contains model classes
       tests/              contains various tests for the basic application
@@ -18,13 +20,10 @@ DIRECTORY STRUCTURE
 REQUIREMENTS
 ------------
 
-Yii2 > 2
-
-PostgreSQL > 9.0
-
-Php > 5.5
-
-Composer
+    Yii > v2
+    PostgreSQL > 9.0
+    Php > 5.5
+    Composer
 
 
 # yii2-webfilemanager
