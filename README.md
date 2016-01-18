@@ -4,7 +4,7 @@ Web  File Manager is based on Yii2
 EXAMPLE WEB
 -------------------
     you can see the work By link:
-    [Web  File Manager](http://manager.virtc.ru)    
+[Web  File Manager](http://manager.virtc.ru)    
 
    
 DIRECTORY STRUCTURE
@@ -34,4 +34,4 @@ REQUIREMENTS
     Composer
     
         
-[Web  File Manager](http://manager.virtc.ru) 
+
